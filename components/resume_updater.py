@@ -38,6 +38,8 @@ ADDITIONAL INSTRUCTIONS:
 REQUIREMENTS:
 - Highlight relevant skills and experiences that match the target job
 - Use keywords from the job description naturally
+- Reference specific projects from my PROJECT PORTFOLIO that demonstrate required skills
+- Include concrete project achievements and technologies used
 - Maintain professional format WITHOUT excessive bold or highlighting
 - Emphasize achievements that match the role
 - Keep it concise and ATS-friendly

@@ -4,8 +4,8 @@ Sidebar component for configuration and document management
 
 import streamlit as st
 from utils.helpers import get_api_key, mask_api_key, show_success_message, show_info_message, show_warning_message
-from utils.document_processing import process_uploaded_file, DEFAULT_RESUME
-from config.constants import DEFAULT_RESUME as RESUME_FILENAME
+from utils.document_processing import process_uploaded_file, DEFAULT_RESUME, DEFAULT_PROJECTS
+from config.constants import DEFAULT_RESUME as RESUME_FILENAME, DEFAULT_PROJECTS as PROJECTS_FILENAME
 
 
 def render_sidebar():
@@ -90,15 +90,23 @@ This will be used for all email generation, resume updates, and cover letters.""
     
     # Document Status
     if st.session_state.documents:
+        loaded_files = []
         if RESUME_FILENAME in st.session_state.documents:
-            show_success_message(f"✅ Default resume loaded: {RESUME_FILENAME}")
+            loaded_files.append(f"✅ Resume: {RESUME_FILENAME}")
         
-        additional_docs = len(st.session_state.documents) - (1 if RESUME_FILENAME in st.session_state.documents else 0)
+        if PROJECTS_FILENAME in st.session_state.documents:
+            loaded_files.append(f"✅ Projects: {PROJECTS_FILENAME}")
+        
+        if loaded_files:
+            for file_info in loaded_files:
+                st.success(file_info)
+        
+        additional_docs = len(st.session_state.documents) - len([f for f in [RESUME_FILENAME, PROJECTS_FILENAME] if f in st.session_state.documents])
         if additional_docs > 0:
             show_info_message(f"📄 {additional_docs} additional document(s) loaded")
     else:
-        show_warning_message(f"⚠️ Default resume not found: {RESUME_FILENAME}")
-        st.info("Please upload your resume manually below.")
+        show_warning_message(f"⚠️ Default files not found")
+        st.info("Please upload your resume and projects files manually below.")
     
     # Document Upload Section
     st.subheader("📁 Upload Documents")
@@ -126,6 +134,8 @@ This will be used for all email generation, resume updates, and cover letters.""
             with col1:
                 if doc_name == RESUME_FILENAME:
                     st.text(f"⭐ {doc_name}")
+                elif doc_name == PROJECTS_FILENAME:
+                    st.text(f"🚀 {doc_name}")
                 else:
                     st.text(doc_name)
             with col2:

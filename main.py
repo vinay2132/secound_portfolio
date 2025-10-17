@@ -6,10 +6,10 @@ A modular Streamlit application for career management powered by Gemini AI
 import streamlit as st
 
 # Import configuration and utilities
-from config.constants import PAGE_CONFIG, TABS, DEFAULT_RESUME
+from config.constants import PAGE_CONFIG, TABS, DEFAULT_RESUME, DEFAULT_PROJECTS
 from config.session_state import initialize_session_state
 from utils.helpers import setup_environment
-from utils.document_processing import auto_load_default_resume, auto_load_additional_documents
+from utils.document_processing import auto_load_default_resume, auto_load_projects_file, auto_load_additional_documents
 
 # Import components
 from components.sidebar import render_sidebar
@@ -31,6 +31,7 @@ def main():
     # Auto-load documents on first run
     if not st.session_state.auto_loaded:
         resume_loaded = auto_load_default_resume()
+        projects_loaded = auto_load_projects_file()
         additional_loaded = auto_load_additional_documents()
         st.session_state.auto_loaded = True
     
@@ -57,13 +58,14 @@ def main():
     
     # Check if documents are loaded
     if not st.session_state.documents:
-        st.error(f"⚠️ No documents loaded. Please make sure '{DEFAULT_RESUME}' is in the same folder as this script, or upload your resume manually in the sidebar.")
+        st.error(f"⚠️ No documents loaded. Please make sure your files are in the same folder as this script, or upload them manually in the sidebar.")
         st.info("""
         ### Getting Started:
         1. Place your resume file named `Vinay_Ramesh_full_stack_developer.pdf` in the same folder as this script
-        2. Or upload your resume manually using the sidebar
-        3. Configure your target job description in the sidebar
-        4. Choose a task from the tabs below once your documents are loaded
+        2. Place your projects file named `My_projects.txt` in the same folder as this script
+        3. Or upload your files manually using the sidebar
+        4. Configure your target job description in the sidebar
+        5. Choose a task from the tabs below once your documents are loaded
         """)
         st.stop()
     

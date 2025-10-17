@@ -18,11 +18,13 @@ def render_document_analysis(api_key):
         "What would you like to analyze?",
         [
             "Job match analysis",
-            "Summarize all documents",
+            "Project portfolio analysis",
             "Extract key skills matching the job",
             "List relevant projects for this job",
+            "Compare my projects to job requirements",
             "Identify strengths and gaps for this role",
-            "Generate career summary for this position"
+            "Generate career summary for this position",
+            "Summarize all documents"
         ]
     )
     
@@ -33,10 +35,13 @@ TASK: {analysis_type}
 
 Provide a comprehensive analysis based on the request, considering:
 - My resume and documents
+- My PROJECT PORTFOLIO with detailed project information
 - The TARGET JOB DESCRIPTION
 - How well I match the job requirements
+- Which specific projects demonstrate the required skills
 
 Be specific, detailed, and actionable:
+- Reference specific projects from my portfolio when relevant
 - Keep formatting clean and minimal
 - Make it professional and easy to read
 - Avoid excessive bold text or highlighting

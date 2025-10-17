@@ -30,8 +30,21 @@ TARGET JOB DESCRIPTION:
 
 RESUME AND DOCUMENTS:
 """
+    # Prioritize resume and projects files for better context
+    from config.constants import DEFAULT_RESUME, DEFAULT_PROJECTS
+    
+    # Add resume first if available
+    if DEFAULT_RESUME in st.session_state.documents:
+        context += f"\n--- {DEFAULT_RESUME} ---\n{st.session_state.documents[DEFAULT_RESUME]}\n"
+    
+    # Add projects file second if available
+    if DEFAULT_PROJECTS in st.session_state.documents:
+        context += f"\n--- {DEFAULT_PROJECTS} (PROJECT PORTFOLIO) ---\n{st.session_state.documents[DEFAULT_PROJECTS]}\n"
+    
+    # Add other documents
     for doc_name, doc_content in st.session_state.documents.items():
-        context += f"\n--- {doc_name} ---\n{doc_content}\n"
+        if doc_name not in [DEFAULT_RESUME, DEFAULT_PROJECTS]:
+            context += f"\n--- {doc_name} ---\n{doc_content}\n"
     
     return context
 

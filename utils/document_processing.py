@@ -6,7 +6,7 @@ import streamlit as st
 import PyPDF2
 import docx
 from pathlib import Path
-from config.constants import DEFAULT_RESUME
+from config.constants import DEFAULT_RESUME, DEFAULT_PROJECTS
 
 
 def extract_text_from_pdf(file_path):
@@ -74,6 +74,25 @@ def auto_load_default_resume():
     return False
 
 
+def auto_load_projects_file():
+    """Automatically load the projects file from the current directory"""
+    current_dir = Path('.')
+    projects_path = current_dir / DEFAULT_PROJECTS
+    
+    if projects_path.exists() and DEFAULT_PROJECTS not in st.session_state.documents:
+        try:
+            text = projects_path.read_text(encoding='utf-8')
+            if text:
+                st.session_state.documents[DEFAULT_PROJECTS] = text
+                return True
+        except Exception as e:
+            st.error(f"Error reading projects file: {str(e)}")
+    elif DEFAULT_PROJECTS in st.session_state.documents:
+        return True
+    
+    return False
+
+
 def auto_load_additional_documents():
     """Automatically load any additional documents from the current directory"""
     current_dir = Path('.')
@@ -81,7 +100,7 @@ def auto_load_additional_documents():
     
     for ext in ['*.pdf', '*.docx', '*.txt']:
         for file_path in current_dir.glob(ext):
-            if file_path.name not in st.session_state.documents and file_path.name != DEFAULT_RESUME:
+            if file_path.name not in st.session_state.documents and file_path.name not in [DEFAULT_RESUME, DEFAULT_PROJECTS]:
                 try:
                     if ext == '*.pdf':
                         text = extract_text_from_pdf(file_path)

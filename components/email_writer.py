@@ -55,6 +55,8 @@ REQUIREMENTS:
 - Use the salutation: {salutation}
 - Keep it to 1-2 SHORT paragraphs maximum
 - Highlight specific technologies that match BOTH the target job description and my resume
+- Reference relevant projects from my PROJECT PORTFOLIO that demonstrate the required skills
+- Mention specific project achievements that align with the job requirements
 - Clearly mention F1 OPT work authorization
 - End with the EXACT signature format from the guidelines
 - Make it sound human, natural, and confident

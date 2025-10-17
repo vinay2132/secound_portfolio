@@ -41,7 +41,9 @@ Write a cover letter that:
 - Uses "Dear Hiring Manager," if no specific name is provided, otherwise use the hiring manager's name
 - Shows genuine interest in the role and company
 - Highlights relevant experiences from my background that match the job requirements
+- References specific projects from my PROJECT PORTFOLIO that demonstrate the required skills
 - Matches specific technologies and skills from my resume to the job requirements
+- Mentions concrete project achievements and outcomes that align with the job
 - Is professional yet personable and human-sounding
 - Mentions F1 OPT work authorization clearly when relevant
 - Includes proper formatting: date, salutation, body paragraphs, closing
