@@ -34,7 +34,6 @@ if 'personal_details' not in st.session_state:
 Full Name: Vinay Ramesh
 Email: vinayramesh6020@gmail.com
 Contact Number: +1 (682) 273-5833
-Expected Rate: $60-$70/hr
 Education: Master of Science in Data Science (UNT, Sep 2023 – Dec 2024), Bachelor of Technology in Computer Science (TKR College of Engineering & Technology, Jun 2017 – May 2021)
 Current Location: Denton, TX
 Relocation: Yes

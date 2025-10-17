@@ -96,7 +96,6 @@ The application includes pre-configured personal details that can be edited in t
 - Full Name: Vinay Ramesh
 - Email: vinayramesh6020@gmail.com
 - Contact: +1 (682) 273-5833
-- Expected Rate: $60-$70/hr
 - Education: MS Data Science (UNT), BTech Computer Science
 - Location: Denton, TX
 - Work Authorization: F1 OPT
