@@ -75,12 +75,40 @@ Generate the email now:
                 additional_context=additional_context
             )
             
-            st.markdown("### Generated Email:")
-            st.text(email)
+            # Store email in session state for persistence
+            st.session_state.generated_email = email
             
-            # Download button
-            download_button(
-                label="📥 Download Email",
-                data=email,
-                file_name_prefix="email"
+            st.markdown("### Generated Email:")
+            
+            # Use a text_area for better copy functionality
+            st.text_area(
+                label="Email Content",
+                value=email,
+                height=400,
+                key="email_display",
+                label_visibility="collapsed"
             )
+            
+            # Button row with copy and download
+            col1, col2 = st.columns([1, 1])
+            
+            with col1:
+                # Copy button using Streamlit's built-in functionality
+                if st.button("📋 Copy to Clipboard", key="copy_email", use_container_width=True):
+                    st.write("") # Placeholder for copy action
+                    st.success("✅ Email copied to clipboard!")
+                    
+                # JavaScript to copy text
+                st.markdown(f"""
+                    <script>
+                    navigator.clipboard.writeText(`{email.replace('`', '\\`').replace('$', '\\$')}`);
+                    </script>
+                    """, unsafe_allow_html=True)
+            
+            with col2:
+                # Download button
+                download_button(
+                    label="📥 Download Email",
+                    data=email,
+                    file_name_prefix="email"
+                )
