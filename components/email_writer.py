@@ -78,37 +78,51 @@ Generate the email now:
             # Store email in session state for persistence
             st.session_state.generated_email = email
             
-            st.markdown("### Generated Email:")
+    # Display generated email if it exists
+    if hasattr(st.session_state, 'generated_email') and st.session_state.generated_email:
+        st.markdown("### Generated Email:")
+        st.text(st.session_state.generated_email)
+        
+        # Action buttons in columns
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            # Escape the email content for JavaScript
+            import json
+            email_json = json.dumps(st.session_state.generated_email)
             
-            # Use a text_area for better copy functionality
-            st.text_area(
-                label="Email Content",
-                value=email,
-                height=400,
-                key="email_display",
-                label_visibility="collapsed"
+            # Copy button styled like download button
+            copy_html = f"""
+            <script>
+            function copyEmail() {{
+                navigator.clipboard.writeText({email_json});
+            }}
+            </script>
+            <button onclick="copyEmail()" style="
+                background: transparent;
+                border: 1px solid rgba(250, 250, 250, 0.2);
+                color: rgb(250, 250, 250);
+                padding: 0.25rem 0.75rem;
+                text-align: center;
+                font-size: 14px;
+                cursor: pointer;
+                border-radius: 0.5rem;
+                width: 100%;
+                font-family: 'Source Sans Pro', sans-serif;
+                font-weight: 400;
+                line-height: 1.6;
+                transition: border-color 0.2s, color 0.2s;
+            " onmouseover="this.style.borderColor='rgb(250, 250, 250)'; this.style.color='rgb(255, 255, 255)';" 
+               onmouseout="this.style.borderColor='rgba(250, 250, 250, 0.2)'; this.style.color='rgb(250, 250, 250)';">
+                📋 Copy Email
+            </button>
+            """
+            st.components.v1.html(copy_html, height=50)
+        
+        with col2:
+            # Download button
+            download_button(
+                label="📥 Download Email",
+                data=st.session_state.generated_email,
+                file_name_prefix="email"
             )
-            
-            # Button row with copy and download
-            col1, col2 = st.columns([1, 1])
-            
-            with col1:
-                # Copy button using Streamlit's built-in functionality
-                if st.button("📋 Copy to Clipboard", key="copy_email", use_container_width=True):
-                    st.write("") # Placeholder for copy action
-                    st.success("✅ Email copied to clipboard!")
-                    
-                # JavaScript to copy text
-                st.markdown(f"""
-                    <script>
-                    navigator.clipboard.writeText(`{email.replace('`', '\\`').replace('$', '\\$')}`);
-                    </script>
-                    """, unsafe_allow_html=True)
-            
-            with col2:
-                # Download button
-                download_button(
-                    label="📥 Download Email",
-                    data=email,
-                    file_name_prefix="email"
-                )

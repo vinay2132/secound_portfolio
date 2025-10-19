@@ -86,8 +86,88 @@ This will be used for all email generation, resume updates, and cover letters.""
             show_success_message("Personal details updated!")
             st.rerun()
     
+# ADD THIS ENTIRE SECTION TO YOUR sidebar.py
+    # Place it right after the "Edit Personal Details" expander
+    # and before the "Document Status" section
+    
     st.divider()
     
+    # RAG System Configuration
+    st.subheader("🧠 Smart RAG System")
+    
+    st.markdown("""
+    **Semantic Document Search** uses AI to find only relevant parts of your documents, 
+    making responses more specific and reducing costs.
+    """)
+    
+    use_rag = st.toggle(
+        "Enable Smart Document Search (RAG)",
+        value=st.session_state.get('use_rag', False),
+        help="When enabled, uses semantic search to find relevant information instead of sending all documents every time",
+        key="rag_toggle"
+    )
+    
+    st.session_state.use_rag = use_rag
+    
+    if use_rag:
+        # Import RAG utilities
+        try:
+            from utils.rag_system import (
+                initialize_rag_system, 
+                index_documents_if_needed
+            )
+            
+            # Initialize RAG system
+            rag_system = initialize_rag_system(api_key)
+            
+            # Auto-index if documents are loaded but not indexed
+            if st.session_state.documents and not rag_system.chunks:
+                with st.spinner("🔄 Indexing documents for smart search..."):
+                    index_documents_if_needed(rag_system)
+            
+            # Show RAG statistics
+            if rag_system.chunks:
+                stats = rag_system.get_statistics()
+                
+                st.success("✅ RAG System Active")
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.metric("Indexed Chunks", stats['total_chunks'])
+                with col2:
+                    st.metric("Documents", stats['total_documents'])
+                
+                st.metric("Avg Chunk Size", f"{stats['avg_chunk_size']} chars")
+                
+                with st.expander("📚 Indexed Documents"):
+                    for source in stats['sources']:
+                        st.text(f"✓ {source}")
+                
+                # Re-index button
+                if st.button("🔄 Re-index All Documents", use_container_width=True):
+                    rag_system.chunks = []
+                    rag_system.embeddings_cache = {}
+                    with st.spinner("Re-indexing..."):
+                        index_documents_if_needed(rag_system)
+                    show_success_message("Documents re-indexed successfully!")
+                    st.rerun()
+            else:
+                st.info("📝 No documents indexed yet. Upload documents to enable RAG.")
+        
+        except ImportError as e:
+            st.error("❌ RAG system not available. Install numpy: `pip install numpy`")
+            st.session_state.use_rag = False
+        except Exception as e:
+            st.error(f"❌ Error initializing RAG: {str(e)}")
+            st.session_state.use_rag = False
+    else:
+        st.info("📄 Standard mode: All documents sent with each request")
+        st.caption("Toggle on to enable smart semantic search")
+    
+    st.divider()
+    
+    # Continue with existing code (Document Status section)
+    #    
     # Document Status
     if st.session_state.documents:
         loaded_files = []

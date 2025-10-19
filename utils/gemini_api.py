@@ -1,5 +1,5 @@
 """
-Gemini API utilities and wrapper functions
+Gemini API utilities with RAG support
 """
 
 import streamlit as st
@@ -19,7 +19,7 @@ def call_gemini(prompt, api_key):
 
 
 def get_context():
-    """Build context from all uploaded documents, personal details, and guidelines"""
+    """Build context - LEGACY function for backward compatibility"""
     context = f"""{st.session_state.writing_guidelines}
 
 PERSONAL DETAILS:
@@ -30,7 +30,6 @@ TARGET JOB DESCRIPTION:
 
 RESUME AND DOCUMENTS:
 """
-    # Prioritize resume and projects files for better context
     from config.constants import DEFAULT_RESUME, DEFAULT_PROJECTS
     
     # Add resume first if available
@@ -50,7 +49,30 @@ RESUME AND DOCUMENTS:
 
 
 def generate_content_with_context(prompt_template, api_key, **kwargs):
-    """Generate content using Gemini API with full context"""
-    context = get_context()
-    full_prompt = f"{context}\n\n{prompt_template.format(**kwargs)}"
-    return call_gemini(full_prompt, api_key)
+    """
+    Generate content with smart RAG if available, fallback to full context
+    
+    This function intelligently chooses between RAG and standard mode:
+    - If RAG is enabled and initialized: Uses semantic search for relevant chunks
+    - Otherwise: Uses the original method (send all documents)
+    """
+    # Check if RAG system is enabled and initialized
+    use_rag = st.session_state.get('use_rag', False)
+    
+    if use_rag and 'rag_system' in st.session_state:
+        # Use RAG system for intelligent retrieval
+        rag = st.session_state.rag_system
+        
+        # Build query context from the task and parameters
+        query_context = f"Task: {prompt_template[:300]}\n"
+        for key, value in kwargs.items():
+            if value and len(str(value)) > 0:
+                query_context += f"{key}: {str(value)[:150]}\n"
+        
+        # Generate using RAG
+        return rag.generate_with_rag(prompt_template, query_context, **kwargs)
+    else:
+        # Fallback to original method (send all documents)
+        context = get_context()
+        full_prompt = f"{context}\n\n{prompt_template.format(**kwargs)}"
+        return call_gemini(full_prompt, api_key)

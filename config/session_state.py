@@ -31,12 +31,19 @@ def initialize_session_state():
     if 'writing_guidelines' not in st.session_state:
         from .constants import WRITING_GUIDELINES_TEMPLATE
         st.session_state.writing_guidelines = WRITING_GUIDELINES_TEMPLATE
+    
+    # RAG system (NEW)
+    if 'use_rag' not in st.session_state:
+        st.session_state.use_rag = False
+    if 'rag_system' not in st.session_state:
+        st.session_state.rag_system = None
 
 def clear_session_state():
     """Clear all session state variables"""
     keys_to_clear = [
         'documents', 'auto_loaded', 'job_description', 'jd_configured',
-        'chat_history', 'personal_details', 'writing_guidelines'
+        'chat_history', 'personal_details', 'writing_guidelines',
+        'use_rag', 'rag_system'  # Added RAG-related keys
     ]
     for key in keys_to_clear:
         if key in st.session_state:
