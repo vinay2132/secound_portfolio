@@ -1,5 +1,5 @@
 """
-Session state initialization and management
+Session state initialization and management with URL fetching support
 """
 
 import streamlit as st
@@ -18,6 +18,12 @@ def initialize_session_state():
         st.session_state.job_description = ""
     if 'jd_configured' not in st.session_state:
         st.session_state.jd_configured = False
+    
+    # NEW: Job URL and structured details
+    if 'job_url' not in st.session_state:
+        st.session_state.job_url = ""
+    if 'job_details' not in st.session_state:
+        st.session_state.job_details = None
     
     # Chat history
     if 'chat_history' not in st.session_state:
@@ -41,11 +47,16 @@ def initialize_session_state():
         st.session_state.github_url = "https://github.com/vinay2132"
     if 'portfolio_links' not in st.session_state:
         st.session_state.portfolio_links = ""
+    
+    # RAG System
+    if 'use_rag' not in st.session_state:
+        st.session_state.use_rag = False
 
 def clear_session_state():
     """Clear all session state variables"""
     keys_to_clear = [
         'documents', 'auto_loaded', 'job_description', 'jd_configured',
+        'job_url', 'job_details',  # Job URL fetching
         'chat_history', 'personal_details', 'writing_guidelines',
         'use_rag', 'rag_system',  # RAG-related keys
         'portfolio_loaded', 'portfolio_url', 'github_url', 'portfolio_links'  # Portfolio keys

@@ -1,11 +1,18 @@
 """
-Sidebar component for configuration and document management
+Updated Sidebar component with URL fetching capability
 """
 
 import streamlit as st
-from utils.helpers import get_api_key, mask_api_key, show_success_message, show_info_message, show_warning_message
-from utils.document_processing import process_uploaded_file, DEFAULT_RESUME, DEFAULT_PROJECTS
+from utils.helpers import get_api_key, mask_api_key, show_success_message, show_info_message, show_warning_message, show_error_message
+from utils.document_processing import process_uploaded_file
 from config.constants import DEFAULT_RESUME as RESUME_FILENAME, DEFAULT_PROJECTS as PROJECTS_FILENAME
+
+# Import the new job URL fetcher
+try:
+    from utils.job_url_fetcher import fetch_and_display_job, save_job_to_session
+    URL_FETCHER_AVAILABLE = True
+except ImportError:
+    URL_FETCHER_AVAILABLE = False
 
 
 def render_sidebar():
@@ -35,14 +42,20 @@ def render_sidebar():
     
     st.divider()
     
-    # Job Description Configuration
+    # Job Description Configuration with URL Fetching
     with st.expander("🎯 Configure Target Job Description", expanded=not st.session_state.jd_configured):
-        st.markdown("**Enter the job description once - it will be used across all features:**")
-        job_desc_input = st.text_area(
-            "Job Description",
-            value=st.session_state.job_description,
-            height=300,
-            placeholder="""Paste the complete job description here including:
+        st.markdown("**Choose your input method:**")
+        
+        # Create tabs for different input methods
+        jd_tab1, jd_tab2 = st.tabs(["📝 Manual Entry", "🔗 Fetch from URL"])
+        
+        with jd_tab1:
+            st.markdown("**Paste job description manually:**")
+            job_desc_input = st.text_area(
+                "Job Description",
+                value=st.session_state.job_description,
+                height=300,
+                placeholder="""Paste the complete job description here including:
 - Job title and company name
 - Requirements and qualifications
 - Technologies and skills needed
@@ -50,25 +63,78 @@ def render_sidebar():
 - Any other relevant details
 
 This will be used for all email generation, resume updates, and cover letters.""",
-            help="This job description will be the default context for all operations"
-        )
+                help="This job description will be the default context for all operations",
+                key="manual_jd_input"
+            )
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("💾 Save Job Description", use_container_width=True, key="save_manual_jd"):
+                    st.session_state.job_description = job_desc_input
+                    st.session_state.jd_configured = True
+                    if 'job_url' in st.session_state:
+                        del st.session_state.job_url  # Clear URL if manually edited
+                    show_success_message("Job description saved! All features will now use this as context.")
+                    st.rerun()
+            with col2:
+                if st.button("🗑️ Clear Job Description", use_container_width=True, key="clear_manual_jd"):
+                    st.session_state.job_description = ""
+                    st.session_state.jd_configured = False
+                    if 'job_url' in st.session_state:
+                        del st.session_state.job_url
+                    if 'job_details' in st.session_state:
+                        del st.session_state.job_details
+                    show_info_message("Job description cleared.")
+                    st.rerun()
         
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("💾 Save Job Description", use_container_width=True):
-                st.session_state.job_description = job_desc_input
-                st.session_state.jd_configured = True
-                show_success_message("Job description saved! All features will now use this as context.")
-                st.rerun()
-        with col2:
-            if st.button("🗑️ Clear Job Description", use_container_width=True):
-                st.session_state.job_description = ""
-                st.session_state.jd_configured = False
-                show_info_message("Job description cleared.")
-                st.rerun()
+        with jd_tab2:
+            if not URL_FETCHER_AVAILABLE:
+                st.warning("⚠️ URL fetching not available. Install required packages:")
+                st.code("pip install requests beautifulsoup4", language="bash")
+            else:
+                st.markdown("**Fetch job description from URL:**")
+                st.info("📌 Supports: LinkedIn, Indeed, Greenhouse, Lever, and most job boards")
+                
+                job_url = st.text_input(
+                    "Job Posting URL",
+                    placeholder="https://www.linkedin.com/jobs/view/...",
+                    help="Paste the URL of the job posting",
+                    key="job_url_input"
+                )
+                
+                fetch_button = st.button("🌐 Fetch Job Description", 
+                                        use_container_width=True, 
+                                        key="fetch_job_url",
+                                        disabled=not job_url.strip())
+                
+                if fetch_button and job_url.strip():
+                    # Store URL in session state to trigger display in main area
+                    st.session_state.fetching_job_url = job_url
+                    st.session_state.show_job_preview = True
+                    st.rerun()
+                
+                # Show if job was fetched from URL
+                if st.session_state.get('job_url'):
+                    st.success(f"✅ Currently using job from URL")
+                    st.caption(f"Source: {st.session_state.job_url[:50]}...")
+                    
+                    if st.button("🔄 Fetch Different Job", use_container_width=True, key="fetch_new_job"):
+                        if 'fetching_job_url' in st.session_state:
+                            del st.session_state.fetching_job_url
+                        if 'show_job_preview' in st.session_state:
+                            del st.session_state.show_job_preview
+                        st.rerun()
         
+        # Show configuration status
         if st.session_state.jd_configured:
-            show_success_message("✅ Job description is configured and active!")
+            st.divider()
+            st.success("✅ Job description is configured and active!")
+            
+            # Show source
+            if 'job_url' in st.session_state:
+                st.caption(f"📌 Source: Fetched from URL")
+            else:
+                st.caption(f"📌 Source: Manual entry")
     
     st.divider()
     
@@ -85,10 +151,6 @@ This will be used for all email generation, resume updates, and cover letters.""
             st.session_state.personal_details = personal_details_input
             show_success_message("Personal details updated!")
             st.rerun()
-    
-# ADD THIS ENTIRE SECTION TO YOUR sidebar.py
-    # Place it right after the "Edit Personal Details" expander
-    # and before the "Document Status" section
     
     st.divider()
     
@@ -207,7 +269,7 @@ This will be used for all email generation, resume updates, and cover letters.""
                         index_documents_if_needed(rag_system)
                     st.rerun()
                 else:
-                    show_error_message("❌ Could not fetch portfolio content. Check internet connection.")
+                    st.error("❌ Could not fetch portfolio content. Check internet connection.")
     
     st.caption("Fetches live content from your portfolio website and GitHub profile")
     

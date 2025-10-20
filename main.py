@@ -20,6 +20,75 @@ from components.qa_assistant import render_qa_assistant
 from components.document_analysis import render_document_analysis
 
 
+def render_job_preview():
+    """Render job preview when fetching from URL"""
+    if not st.session_state.get('show_job_preview', False):
+        return False
+    
+    if not st.session_state.get('fetching_job_url'):
+        return False
+    
+    try:
+        from utils.job_url_fetcher import fetch_and_display_job, save_job_to_session
+        
+        st.info("🔍 **Job Description Preview** - Review the extracted information below")
+        
+        url = st.session_state.fetching_job_url
+        job_details = fetch_and_display_job(url)
+        
+        if job_details:
+            # Show action buttons
+            st.divider()
+            col1, col2, col3 = st.columns([2, 2, 1])
+            
+            with col1:
+                if st.button("✅ Use This Job Description", 
+                           use_container_width=True, 
+                           type="primary",
+                           key="use_fetched_jd_main"):
+                    save_job_to_session(job_details)
+                    # Clear preview flags
+                    del st.session_state.fetching_job_url
+                    del st.session_state.show_job_preview
+                    st.success("✅ Job description configured from URL!")
+                    st.rerun()
+            
+            with col2:
+                if st.button("🔄 Fetch Different Job", 
+                           use_container_width=True,
+                           key="refetch_jd_main"):
+                    del st.session_state.fetching_job_url
+                    del st.session_state.show_job_preview
+                    st.rerun()
+            
+            with col3:
+                if st.button("❌ Cancel", 
+                           use_container_width=True,
+                           key="cancel_jd_main"):
+                    del st.session_state.fetching_job_url
+                    del st.session_state.show_job_preview
+                    st.rerun()
+            
+            return True
+        else:
+            st.error("❌ Could not fetch job description. Please try manual entry or a different URL.")
+            if st.button("🔙 Go Back"):
+                del st.session_state.fetching_job_url
+                del st.session_state.show_job_preview
+                st.rerun()
+            return True
+            
+    except Exception as e:
+        st.error(f"❌ Error: {str(e)}")
+        if st.button("🔙 Go Back"):
+            if 'fetching_job_url' in st.session_state:
+                del st.session_state.fetching_job_url
+            if 'show_job_preview' in st.session_state:
+                del st.session_state.show_job_preview
+            st.rerun()
+        return True
+
+
 def main():
     """Main application function"""
     
@@ -51,6 +120,11 @@ def main():
     # Main Content
     st.title("💼 AI Career Assistant")
     st.markdown("*Your personal AI assistant for career management powered by Gemini*")
+    
+    # Check if we need to show job preview
+    if render_job_preview():
+        # Stop here and show only the preview
+        return
     
     # Check for API key
     if not api_key:
@@ -86,21 +160,35 @@ def main():
         
         **📋 Configure your target job description in the sidebar** (under "🎯 Configure Target Job Description")
         
+        Choose one of two methods:
+        - **📝 Manual Entry**: Paste the job description directly
+        - **🔗 Fetch from URL**: Automatically extract from job posting URL
+        
         This is a **one-time setup** that will:
         - ✅ Generate tailored emails automatically
         - ✅ Update your resume to match the job requirements
         - ✅ Create customized cover letters
         - ✅ Provide job-specific career advice
         
-        Simply paste the complete job posting once, and all features will use it as context!
+        Simply configure once, and all features will use it as context!
         """)
         st.stop()
     
     # Show job description status
     st.success(f"✅ Target job configured! All features are using your job description as context.")
-    with st.expander("📋 View Current Job Description"):
-        job_desc_preview = st.session_state.job_description[:500] + "..." if len(st.session_state.job_description) > 500 else st.session_state.job_description
-        st.text(job_desc_preview)
+    
+    # Show source information
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        with st.expander("📋 View Current Job Description"):
+            job_desc_preview = st.session_state.job_description[:500] + "..." if len(st.session_state.job_description) > 500 else st.session_state.job_description
+            st.text(job_desc_preview)
+    
+    with col2:
+        if st.session_state.get('job_url'):
+            st.caption("📌 Source: URL")
+        else:
+            st.caption("📌 Source: Manual")
     
     # Create tabs for different functionalities
     tab1, tab2, tab3, tab4, tab5 = st.tabs(TABS)
