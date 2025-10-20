@@ -33,6 +33,15 @@ def main():
         resume_loaded = auto_load_default_resume()
         projects_loaded = auto_load_projects_file()
         additional_loaded = auto_load_additional_documents()
+        
+        # Auto-load portfolio content
+        if not st.session_state.get('portfolio_loaded', False):
+            from utils.portfolio_fetcher import load_portfolio_content
+            try:
+                load_portfolio_content()
+            except Exception as e:
+                pass  # Silently fail, user can manually load later
+        
         st.session_state.auto_loaded = True
     
     # Render sidebar and get API key

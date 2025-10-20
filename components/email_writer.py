@@ -58,10 +58,12 @@ REQUIREMENTS:
 - Reference relevant projects from my PROJECT PORTFOLIO that demonstrate the required skills
 - Mention specific project achievements that align with the job requirements
 - Clearly mention F1 OPT work authorization
-- End with the EXACT signature format from the guidelines
+- IMPORTANT: Include portfolio and GitHub links in the signature
+- End with the EXACT signature format from the guidelines (with portfolio and GitHub URLs)
 - Make it sound human, natural, and confident
 - NO bold text, asterisks, or highlighting
 - Reference the TARGET JOB DESCRIPTION provided in the context
+- You can mention "View more projects at my portfolio" if relevant
 
 Generate the email now:
 """

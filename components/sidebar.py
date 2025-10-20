@@ -166,8 +166,53 @@ This will be used for all email generation, resume updates, and cover letters.""
     
     st.divider()
     
-    # Continue with existing code (Document Status section)
-    #    
+    # Portfolio & GitHub Integration
+    st.subheader("🌐 Portfolio & GitHub")
+    
+    portfolio_status = st.session_state.get('portfolio_loaded', False)
+    
+    if portfolio_status:
+        st.success("✅ Portfolio content loaded")
+        col1, col2 = st.columns(2)
+        with col1:
+            portfolio_url = st.session_state.get('portfolio_url', 'N/A')
+            st.markdown(f"[🌐 Portfolio]({portfolio_url})")
+        with col2:
+            github_url = st.session_state.get('github_url', 'N/A')
+            st.markdown(f"[💻 GitHub]({github_url})")
+        
+        if st.button("🔄 Refresh Portfolio Content", use_container_width=True):
+            from utils.portfolio_fetcher import refresh_portfolio_content
+            if refresh_portfolio_content():
+                show_success_message("Portfolio content refreshed!")
+                # Re-index if RAG is enabled
+                if st.session_state.get('use_rag', False):
+                    from utils.rag_system import initialize_rag_system, index_documents_if_needed
+                    rag_system = initialize_rag_system(api_key)
+                    rag_system.chunks = []
+                    rag_system.embeddings_cache = {}
+                    index_documents_if_needed(rag_system)
+                st.rerun()
+    else:
+        st.info("📡 Portfolio content not loaded")
+        if st.button("📥 Fetch Portfolio & GitHub", use_container_width=True):
+            from utils.portfolio_fetcher import load_portfolio_content
+            with st.spinner("Fetching content from web..."):
+                if load_portfolio_content():
+                    show_success_message("✅ Portfolio and GitHub content loaded!")
+                    # Index if RAG is enabled
+                    if st.session_state.get('use_rag', False):
+                        from utils.rag_system import initialize_rag_system, index_documents_if_needed
+                        rag_system = initialize_rag_system(api_key)
+                        index_documents_if_needed(rag_system)
+                    st.rerun()
+                else:
+                    show_error_message("❌ Could not fetch portfolio content. Check internet connection.")
+    
+    st.caption("Fetches live content from your portfolio website and GitHub profile")
+    
+    st.divider()
+    
     # Document Status
     if st.session_state.documents:
         loaded_files = []

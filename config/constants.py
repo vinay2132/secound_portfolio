@@ -16,6 +16,8 @@ PERSONAL_DETAILS_TEMPLATE = """
 Full Name: Vinay Ramesh
 Email: vinayramesh6020@gmail.com
 Contact Number: +1 (682) 273-5833
+Portfolio: https://vinay2132.github.io/my_portfolio/
+GitHub: https://github.com/vinay2132
 Education: Master of Science in Data Science (UNT, Sep 2023 – Dec 2024), Bachelor of Technology in Computer Science (TKR College of Engineering & Technology, Jun 2017 – May 2021)
 Current Location: Denton, TX
 Relocation: Yes
@@ -59,6 +61,7 @@ CRITICAL WRITING GUIDELINES - MUST FOLLOW FOR ALL OUTPUTS:
    - Highlight specific technologies from BOTH job description and resume
    - If no hiring manager name is provided, use: "Dear Hiring Manager,"
    - ALWAYS mention F1 OPT work authorization clearly when relevant
+   - ALWAYS include portfolio and GitHub links in signature
    - ALWAYS use this exact signature format:
 
 --
@@ -67,6 +70,8 @@ Vinay Ramesh
 Senior Full Stack Developer
 📧 vinayramesh6020@gmail.com
 📞 +1 (682) 273-5833
+🌐 Portfolio: https://vinay2132.github.io/my_portfolio/
+💻 GitHub: https://github.com/vinay2132
 
 4. CONTENT REQUIREMENTS:
    - Incorporate personal details naturally where relevant

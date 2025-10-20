@@ -47,9 +47,10 @@ Write a cover letter that:
 - Is professional yet personable and human-sounding
 - Mentions F1 OPT work authorization clearly when relevant
 - Includes proper formatting: date, salutation, body paragraphs, closing
+- IMPORTANT: Includes my portfolio and GitHub links (mention "explore my complete portfolio at...")
 - Avoids generic phrases - make it authentic and specific
 - Uses NO excessive bold text or highlighting
-- Ends with my complete contact signature from the guidelines
+- Ends with my complete contact signature from the guidelines (including portfolio/GitHub URLs)
 - Keeps it concise but compelling (2-3 paragraphs maximum)
 
 Write the cover letter now:
