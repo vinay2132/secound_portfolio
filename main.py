@@ -21,7 +21,7 @@ from components.document_analysis import render_document_analysis
 
 
 def render_job_preview():
-    """Render job preview when fetching from URL"""
+    """Render content preview when fetching from URL"""
     if not st.session_state.get('show_job_preview', False):
         return False
     
@@ -31,30 +31,45 @@ def render_job_preview():
     try:
         from utils.job_url_fetcher import fetch_and_display_job, save_job_to_session
         
-        st.info("🔍 **Job Description Preview** - Review the extracted information below")
+        st.info("🔍 **Content Preview** - Review the extracted information below")
+        st.caption("The system works with any URL - job postings or general websites")
         
         url = st.session_state.fetching_job_url
         job_details = fetch_and_display_job(url)
         
         if job_details:
+            # Check if we got meaningful content
+            has_content = job_details.description and len(job_details.description.strip()) > 50
+            
+            if not has_content:
+                st.warning("⚠️ Limited content extracted. This might be due to:")
+                st.markdown("""
+                - JavaScript-rendered content (page loads content dynamically)
+                - Access restrictions or authentication required
+                - Page structure is very complex
+                
+                **Suggestion:** Try copying the content manually or use a different URL.
+                """)
+            
             # Show action buttons
             st.divider()
             col1, col2, col3 = st.columns([2, 2, 1])
             
             with col1:
-                if st.button("✅ Use This Job Description", 
+                if st.button("✅ Use This Content", 
                            use_container_width=True, 
                            type="primary",
-                           key="use_fetched_jd_main"):
+                           key="use_fetched_jd_main",
+                           disabled=not has_content):
                     save_job_to_session(job_details)
                     # Clear preview flags
                     del st.session_state.fetching_job_url
                     del st.session_state.show_job_preview
-                    st.success("✅ Job description configured from URL!")
+                    st.success("✅ Content configured from URL!")
                     st.rerun()
             
             with col2:
-                if st.button("🔄 Fetch Different Job", 
+                if st.button("🔄 Try Different URL", 
                            use_container_width=True,
                            key="refetch_jd_main"):
                     del st.session_state.fetching_job_url
@@ -71,16 +86,31 @@ def render_job_preview():
             
             return True
         else:
-            st.error("❌ Could not fetch job description. Please try manual entry or a different URL.")
-            if st.button("🔙 Go Back"):
-                del st.session_state.fetching_job_url
-                del st.session_state.show_job_preview
-                st.rerun()
+            st.error("❌ Could not fetch content from URL.")
+            st.info("💡 **Troubleshooting tips:**")
+            st.markdown("""
+            1. Check if the URL is accessible in your browser
+            2. Some sites block automated access
+            3. Try copying the content manually instead
+            4. Make sure you have internet connection
+            """)
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("🔄 Try Again", use_container_width=True, key="retry_fetch"):
+                    st.rerun()
+            with col2:
+                if st.button("🔙 Go Back", use_container_width=True, key="go_back_fetch"):
+                    del st.session_state.fetching_job_url
+                    del st.session_state.show_job_preview
+                    st.rerun()
             return True
             
     except Exception as e:
         st.error(f"❌ Error: {str(e)}")
-        if st.button("🔙 Go Back"):
+        st.info("This might be a temporary issue. Try again or use manual entry.")
+        
+        if st.button("🔙 Go Back", key="error_go_back"):
             if 'fetching_job_url' in st.session_state:
                 del st.session_state.fetching_job_url
             if 'show_job_preview' in st.session_state:
@@ -88,7 +118,7 @@ def render_job_preview():
             st.rerun()
         return True
 
-
+        
 def main():
     """Main application function"""
     
