@@ -3,8 +3,11 @@ Email Writer component for generating professional emails
 """
 
 import streamlit as st
+import os
 from utils.gemini_api import generate_content_with_context
 from utils.helpers import download_button
+from utils.email_sender import send_email, get_smtp_config, validate_email
+from config.constants import DEFAULT_RESUME
 
 
 def render_email_writer(api_key):
@@ -86,7 +89,7 @@ Generate the email now:
         st.text(st.session_state.generated_email)
         
         # Action buttons in columns
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         
         with col1:
             # Escape the email content for JavaScript
@@ -128,3 +131,165 @@ Generate the email now:
                 data=st.session_state.generated_email,
                 file_name_prefix="email"
             )
+        
+        with col3:
+            # Send email button
+            if st.button("📮 Send Email", use_container_width=True, key="send_email_btn"):
+                st.session_state.show_email_form = True
+                # Initialize editable email content
+                if 'editable_email_content' not in st.session_state:
+                    st.session_state.editable_email_content = st.session_state.generated_email
+        
+        # Email sending form - Two step process
+        if st.session_state.get('show_email_form', False):
+            st.divider()
+            
+            # Check if we're in preview/edit mode or send mode
+            if not st.session_state.get('ready_to_send', False):
+                # STEP 1: Preview and Edit Email
+                st.markdown("### 📝 Review & Edit Email")
+                
+                # Load the default resume path
+                resume_path = DEFAULT_RESUME if os.path.exists(DEFAULT_RESUME) else None
+                if resume_path:
+                    st.info(f"📎 Resume will be attached: `{resume_path}`")
+                else:
+                    st.warning("⚠️ Resume file not found. Email will be sent without attachment.")
+                
+                # Editable email content
+                editable_content = st.text_area(
+                    "Edit your email content:",
+                    value=st.session_state.editable_email_content,
+                    height=300,
+                    help="Make any final edits before sending"
+                )
+                
+                # Save editable content
+                st.session_state.editable_email_content = editable_content
+                
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    if st.button("✅ Ready to Send", use_container_width=True, key="ready_to_send_btn"):
+                        st.session_state.ready_to_send = True
+                        st.rerun()
+                
+                with col2:
+                    if st.button("❌ Cancel", use_container_width=True, key="cancel_preview"):
+                        st.session_state.show_email_form = False
+                        st.session_state.ready_to_send = False
+                        if 'editable_email_content' in st.session_state:
+                            del st.session_state.editable_email_content
+                        st.rerun()
+            
+            else:
+                # STEP 2: Final Send Form
+                st.markdown("### 📮 Send Email")
+                
+                # Show attachment info
+                resume_path = DEFAULT_RESUME if os.path.exists(DEFAULT_RESUME) else None
+                if resume_path:
+                    st.success(f"📎 Resume will be attached: `{resume_path}`")
+                
+                with st.form("email_sender_form"):
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        sender_email = st.text_input(
+                            "Your Email",
+                            value="vinayramesh6020@gmail.com",
+                            help="The email address from which to send"
+                        )
+                        recipient_email = st.text_input(
+                            "Recipient Email",
+                            placeholder="recipient@example.com",
+                            help="Who should receive this email"
+                        )
+                    
+                    with col2:
+                        app_password = st.text_input(
+                            "App Password",
+                            type="password",
+                            value="vxhc hbez xeso ezum",
+                            help="⚠️ Use an app-specific password, not your regular password!"
+                        )
+                        sender_name = st.text_input(
+                            "Your Name (optional)",
+                            value="Vinay Ramesh",
+                            help="Name to display as sender"
+                        )
+                    
+                    # Show provider info if email is entered
+                    if sender_email:
+                        smtp_config = get_smtp_config(sender_email)
+                        if smtp_config:
+                            st.info(f"📧 Provider detected: {smtp_config['provider']}")
+                        else:
+                            st.warning("⚠️ Provider not automatically detected. Supported: Gmail, Outlook, Yahoo, AOL")
+                    
+                    col1, col2, col3 = st.columns([2, 2, 1])
+                    
+                    with col1:
+                        send_button = st.form_submit_button("📮 Send Email", use_container_width=True, type="primary")
+                    
+                    with col2:
+                        back_button = st.form_submit_button("← Back to Edit", use_container_width=True)
+                    
+                    with col3:
+                        help_button = st.form_submit_button("💡 Help", use_container_width=True)
+                    
+                    if back_button:
+                        st.session_state.ready_to_send = False
+                        st.rerun()
+                    
+                    if help_button:
+                        st.info("""
+                        **How to get an App Password:**
+                        
+                        **Gmail:**
+                        1. Go to your Google Account settings
+                        2. Enable 2-Step Verification
+                        3. Go to Security → App passwords
+                        4. Generate a new app password
+                        5. Use that 16-character password here
+                        
+                        **Outlook/Hotmail:**
+                        1. Go to account.microsoft.com/security
+                        2. Enable two-step verification
+                        3. Generate an app password
+                        4. Use that password here
+                        
+                        **Other providers:** Check their security settings for app passwords.
+                        """)
+                    
+                    if send_button:
+                        # Validate inputs
+                        if not sender_email or not app_password or not recipient_email:
+                            st.error("❌ Please fill in all required fields!")
+                        elif not validate_email(sender_email):
+                            st.error("❌ Invalid sender email format!")
+                        elif not validate_email(recipient_email):
+                            st.error("❌ Invalid recipient email format!")
+                        else:
+                            # Send email with attachment
+                            with st.spinner("Sending email..."):
+                                success, message = send_email(
+                                    sender_email=sender_email,
+                                    app_password=app_password,
+                                    recipient_email=recipient_email,
+                                    email_content=st.session_state.editable_email_content,
+                                    custom_sender_name=sender_name if sender_name else None,
+                                    attachment_path=resume_path
+                                )
+                                
+                                if success:
+                                    st.success(message)
+                                    # Clear form state
+                                    st.session_state.show_email_form = False
+                                    st.session_state.ready_to_send = False
+                                    if 'editable_email_content' in st.session_state:
+                                        del st.session_state.editable_email_content
+                                    st.rerun()
+                                else:
+                                    st.error(f"❌ {message}")
+                                    st.info("💡 Make sure you're using an app-specific password, not your regular password!")

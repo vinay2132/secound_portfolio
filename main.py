@@ -15,6 +15,7 @@ from utils.document_processing import auto_load_default_resume, auto_load_projec
 from components.sidebar import render_sidebar
 from components.email_writer import render_email_writer
 from components.resume_updater import render_resume_updater
+from components.advanced_resume_formatter import render_advanced_resume_formatter  # NEW IMPORT
 from components.cover_letter import render_cover_letter
 from components.qa_assistant import render_qa_assistant
 from components.document_analysis import render_document_analysis
@@ -221,26 +222,31 @@ def main():
             st.caption("📌 Source: Manual")
     
     # Create tabs for different functionalities
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(TABS)
+    # UPDATED: Now 6 tabs instead of 5
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(TABS)
     
     # Tab 1: Email Writer
     with tab1:
         render_email_writer(api_key)
     
-    # Tab 2: Resume Updater
+    # Tab 2: Resume Updater (Text-based)
     with tab2:
         render_resume_updater(api_key)
     
-    # Tab 3: Cover Letter Generator
+    # Tab 3: Advanced DOCX Formatter (NEW!)
     with tab3:
+        render_advanced_resume_formatter(api_key)
+    
+    # Tab 4: Cover Letter Generator
+    with tab4:
         render_cover_letter(api_key)
     
-    # Tab 4: Q&A Assistant
-    with tab4:
+    # Tab 5: Q&A Assistant
+    with tab5:
         render_qa_assistant(api_key)
     
-    # Tab 5: Document Analysis
-    with tab5:
+    # Tab 6: Document Analysis
+    with tab6:
         render_document_analysis(api_key)
     
     # Footer

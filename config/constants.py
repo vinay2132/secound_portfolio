@@ -94,9 +94,11 @@ PAGE_CONFIG = {
 }
 
 # Tab Configuration
+# UPDATED: Added new tab for DOCX Formatter
 TABS = [
     "📧 Email Writer",
-    "📄 Resume Updater", 
+    "📄 Resume Updater",
+    "🎯 DOCX Formatter",  # NEW TAB - 3-Stage Professional Resume Generator
     "✉️ Cover Letter",
     "💬 Q&A Assistant",
     "📊 Document Summary"

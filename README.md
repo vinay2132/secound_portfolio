@@ -9,6 +9,9 @@ A powerful AI-powered career management application built with Streamlit and Goo
 - Multiple email purposes (Job Application, Follow-up, Networking, Thank You)
 - Customizable tone (Professional, Confident, Friendly, Formal)
 - Automatic technology matching with job requirements
+- **NEW:** Send emails directly from the app using SMTP
+- Supports Gmail, Outlook, Yahoo, AOL and more
+- Uses app-specific passwords for secure authentication
 
 ### 📄 Resume Updater
 - Tailor resume to specific job descriptions
@@ -76,11 +79,37 @@ The application will open in your browser at `http://localhost:8501`
 1. **Configure Job Description**: Enter your target job description once in the sidebar - it will be used across all features
 2. **Upload Documents**: The app automatically loads your default resume, or you can upload additional documents
 3. **Choose Your Task**: Use the tabs to access different features:
-   - Email Writer: Create professional emails
+   - Email Writer: Create professional emails and send them directly
    - Resume Updater: Tailor your resume to job requirements
    - Cover Letter Generator: Create compelling cover letters
    - Q&A Assistant: Get personalized career advice
    - Document Analysis: Analyze your profile and job match
+
+## 📮 Email Sending Feature
+
+The Email Writer now supports sending emails directly from the application!
+
+### How to Use:
+1. Generate your email using the Email Writer
+2. Click the "📮 Send Email" button
+3. Enter your email and app password
+4. Enter the recipient's email
+5. Click "Send Email"
+
+### Getting an App Password:
+
+**For Gmail:**
+1. Enable 2-Step Verification in your Google Account
+2. Go to Security → App passwords
+3. Generate a new 16-character app password
+4. Use this password in the app (not your regular password!)
+
+**For Outlook/Hotmail:**
+1. Enable two-step verification at account.microsoft.com/security
+2. Generate an app password
+3. Use this password in the app
+
+**For Other Providers:** Check your provider's security settings for app passwords.
 
 ## Key Features
 
