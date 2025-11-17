@@ -2,71 +2,64 @@
 
 import { motion } from "framer-motion";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { FaReact, FaNodeJs, FaPhp, FaUnity, FaPython, FaDocker, FaGitAlt, FaWordpress, FaShopify, FaAws } from 'react-icons/fa';
+import { FaReact, FaNodeJs, FaPhp, FaUnity, FaPython, FaDocker, FaGitAlt, FaWordpress, FaShopify, FaAws, FaJava, FaLock, FaDatabase } from 'react-icons/fa';
 import { SiOpenai, SiTensorflow, SiMongodb, SiMysql, SiTailwindcss, SiNextdotjs, SiTypescript } from 'react-icons/si';
 
 const ExperienceSection = () => {
   const experiences = [
     {
-      title: "AI / VR Research Assistant",
-      company: "CSU Dominguez Hills",
-      location: "Carson, CA",
-      period: "Aug 2023 - May 2025",
+      title: "Product Engineer",
+      company: "Loyalty Juggernaut India Private Limited",
+      location: "Hyderabad, India",
+      period: "Nov 2021 - Present",
       skills: [
-        { name: "Unity", icon: <FaUnity className="text-2xl" /> },
-        { name: "OpenAI", icon: <SiOpenai className="text-2xl" /> },
-        { name: "Python", icon: <FaPython className="text-2xl" /> },
-        { name: "TensorFlow", icon: <SiTensorflow className="text-2xl" /> },
-        { name: "React", icon: <FaReact className="text-2xl" /> },
-        { name: "Next.js", icon: <SiNextdotjs className="text-2xl" /> }
+        { name: "React.js", icon: <FaReact className="text-2xl" /> },
+        { name: "Node.js", icon: <FaNodeJs className="text-2xl" /> },
+        { name: "Java (Spring Boot)", icon: <FaJava className="text-2xl" /> },
+        { name: "GraphQL APIs", icon: <FaNodeJs className="text-2xl" /> },
+        { name: "PostgreSQL", icon: <SiMysql className="text-2xl" /> },
+        { name: "OAuth 2.0", icon: <FaLock className="text-2xl" /> }
       ],
       achievements: [
-        "Developed immersive VR classroom with Unity & OpenAI, boosting engagement by 40%",
-        "Created LLM-powered NPC teachers improving knowledge retention by 50%",
-        "Built department website and mentored 6 students in VR development"
+        "Delivered secure, high-performance full-stack applications for the finance industry.",
+        "Built responsive, real-time data dashboards and scalable microservices on AWS.",
+        "Implemented robust authentication and authorization flows using OAuth 2.0 and JWT."
       ],
       animation: { x: -100, opacity: 0 }
     },
     {
-      title: "Full Stack SDE",
-      company: "Self-Employed",
-      location: "Mumbai, India",
-      period: "Aug 2020 - Jul 2023",
+      title: "Web Developer / Internships",
+      company: "Codeproofs, Vruksh Ecosystem Foundation, Robokalam, Oneline Works",
+      location: "India (Remote & On-site)",
+      period: "2018 - 2021",
       skills: [
-        { name: "React", icon: <FaReact className="text-2xl" /> },
-        { name: "Node.js", icon: <FaNodeJs className="text-2xl" /> },
-        { name: "TypeScript", icon: <SiTypescript className="text-2xl" /> },
-        { name: "AWS", icon: <FaAws className="text-2xl" /> },
-        { name: "PHP", icon: <FaPhp className="text-2xl" /> },
-        { name: "Docker", icon: <FaDocker className="text-2xl" /> },
-        { name: "Git", icon: <FaGitAlt className="text-2xl" /> },
-        { name: "MongoDB", icon: <SiMongodb className="text-2xl" /> }
+        { name: "AngularJS", icon: <SiNextdotjs className="text-2xl" /> },
+        { name: "HTML/CSS/JS", icon: <FaReact className="text-2xl" /> },
+        { name: "PHP & MySQL", icon: <FaPhp className="text-2xl" /> },
+        { name: "Web Design", icon: <FaWordpress className="text-2xl" /> }
       ],
       achievements: [
-        "Built 15+ full-stack apps improving UI responsiveness by 40%",
-        "Implemented CI/CD pipelines reducing load times by 50%",
-        "Delivered 7 client projects with 95% satisfaction rate"
+        "Designed and developed responsive web pages, dashboards, and landing pages.",
+        "Collaborated with UI/UX and tech teams to implement and maintain production code.",
+        "Delivered multiple internship projects while maintaining professional and ethical standards."
       ],
       animation: { y: 50, opacity: 0 }
     },
     {
-      title: "Full Stack SDE",
-      company: "Briefkase Digital Communications",
-      location: "Mumbai, India",
-      period: "Jun 2016 - Sep 2020",
+      title: "Data Science & Analytics",
+      company: "Academic and Certification Projects",
+      location: "India & USA",
+      period: "Ongoing",
       skills: [
-        { name: "WordPress", icon: <FaWordpress className="text-2xl" /> },
-        { name: "Shopify", icon: <FaShopify className="text-2xl" /> },
-        { name: "TypeScript", icon: <SiTypescript className="text-2xl" /> },
-        { name: "AWS", icon: <FaAws className="text-2xl" /> },
-        { name: "PHP", icon: <FaPhp className="text-2xl" /> },
-        { name: "MySQL", icon: <SiMysql className="text-2xl" /> },
-        { name: "React", icon: <FaReact className="text-2xl" /> }
+        { name: "Python", icon: <FaPython className="text-2xl" /> },
+        { name: "Tableau", icon: <FaDatabase className="text-2xl" /> },
+        { name: "Power BI", icon: <FaDatabase className="text-2xl" /> },
+        { name: "Machine Learning", icon: <SiTensorflow className="text-2xl" /> }
       ],
       achievements: [
-        "Led 5-member team delivering 60+ web applications",
-        "Improved website performance by 70% and security by 80%",
-        "Developed custom themes for WordPress, Magento & Shopify"
+        "Completed certifications such as Data Science For Masters and Python101 for Data Science.",
+        "Worked on projects involving health plan data, census income analysis, and ML-based prediction.",
+        "Used visualization tools like Tableau and Power BI to communicate insights to stakeholders."
       ],
       animation: { x: 100, opacity: 0 }
     }

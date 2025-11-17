@@ -84,7 +84,7 @@ const Home = () => {
                   transition={{ delay: 0.3 }}
                   className="h1 text-4xl sm:text-5xl md:text-6xl"
                 >
-                  Hello I&lsquo;m <br /> <span className="text-accent">Rohan Sonawane</span>
+                  Hey, I&lsquo;m <br /> <span className="text-accent">Vinay</span>
                 </motion.h1>
                 <motion.p 
                   initial={{ opacity: 0, y: 20 }}
@@ -92,8 +92,8 @@ const Home = () => {
                   transition={{ delay: 0.4 }}
                   className="max-w-[500px] mx-auto xl:mx-0 mb-6 text-white/80 text-sm sm:text-base"
                 >
-                  A seasoned Full Stack Developer with a Master's degree in Computer Science from California State University, Dominguez Hills. 
-                  Specializing in building scalable applications, AI/ML solutions, and immersive VR experiences.
+                  Data Analyst with 3+ years of experience transforming complex datasets into actionable insights to support strategic business decisions.
+                  Skilled in SQL, Python, Excel, and BI tools like Tableau and Power BI, building dashboards, models, and experiments that drive measurable impact.
                 </motion.p>
             
                 <motion.div 

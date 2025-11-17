@@ -18,12 +18,12 @@ const jetbrainsMono = JetBrains_Mono({
  });
 
 export const metadata = {
-  title: "Rohan Sonawane | Portfolio",
-  description: "Full Stack Software Developer | AI / ML | Docker, CI/CD, Jenkins | PHP, Python, JavaScript (React, Node, Next) | WordPress | UI/UX Designer | Blender, Unity Developer | API Integration Specialist | Testing",
-  keywords: ["Full Stack Developer", "Software Engineer", "Web Development", "UI/UX Design", "AI/ML", "React", "Next.js", "Node.js", "Python", "PHP"],
-  authors: [{ name: "Rohan Sonawane" }],
-  creator: "Rohan Sonawane",
-  publisher: "Rohan Sonawane",
+  title: "Vinay | Data Analyst & Full-Stack Developer",
+  description: "Data Analyst with 3+ years of experience turning complex datasets into actionable insights, plus full-stack development across finance, healthcare, and e-commerce.",
+  keywords: ["Vinay", "Data Analyst", "Full Stack Developer", "SQL", "Python", "Tableau", "Power BI", "React", "Node.js", "Next.js"],
+  authors: [{ name: "Vinay" }],
+  creator: "Vinay",
+  publisher: "Vinay",
   robots: "index, follow",
   icons: {
     icon: '/assets/favicon.ico',
@@ -38,24 +38,24 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://rohansonawane.tech",
-    title: "Rohan Sonawane | Portfolio",
-    description: "Full Stack Software Developer | AI / ML | Docker, CI/CD, Jenkins | PHP, Python, JavaScript (React, Node, Next) | WordPress | UI/UX Designer | Blender, Unity Developer | API Integration Specialist | Testing",
-    siteName: "Rohan Sonawane Portfolio",
+    url: "https://vinay2132.github.io/my_portfolio/",
+    title: "Vinay | Data Analyst & Full-Stack Developer",
+    description: "Data Analyst with 3+ years of experience in SQL, Python, Excel, Tableau and Power BI, building dashboards and models that drive strategic decisions.",
+    siteName: "Vinay Portfolio",
     images: [
       {
         url: '/assets/Portfolio-picture.png',
         width: 1200,
         height: 630,
-        alt: 'Rohan Sonawane Portfolio Preview'
+        alt: 'Vinay Portfolio Preview'
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rohan Sonawane | Portfolio",
-    description: "Full Stack Software Developer | AI / ML | Docker, CI/CD, Jenkins | PHP, Python, JavaScript (React, Node, Next) | WordPress | UI/UX Designer | Blender, Unity Developer | API Integration Specialist | Testing",
-    creator: "@rohansonawane",
+    title: "Vinay | Data Analyst & Full-Stack Developer",
+    description: "Data Analyst and full-stack developer working across finance, healthcare, and e-commerce.",
+    creator: "@vinay",
     images: ['/assets/Portfolio-picture.png']
   },
   viewport: {
@@ -70,7 +70,7 @@ export const metadata = {
     google: 'your-google-site-verification',
   },
   alternates: {
-    canonical: 'https://rohansonawane.tech'
+    canonical: 'https://vinay2132.github.io/my_portfolio/'
   }
 };
 
