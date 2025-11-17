@@ -16,7 +16,7 @@ const projects = [
     imageHeight: 400,
     tags: ["Python", "Deep Learning", "Multi-Omics", "XAI"],
     skills: ["Python", "TensorFlow", "PyTorch", "scikit-learn", "Pandas", "NumPy", "Keras", "Jupyter"],
-    icons: [<FaPython />, <SiTensorflow />, <SiPytorch />, <SiScikitlearn />, <SiPandas />, <SiNumpy />, <SiKeras />, <SiJupyter />],
+    icons: [FaPython, SiTensorflow, SiPytorch, SiScikitlearn, SiPandas, SiNumpy, SiKeras, SiJupyter],
     github: "https://github.com/rohansonawane/early-cancer-detection",
     live: null,
     featured: true,
@@ -30,7 +30,7 @@ const projects = [
     imageHeight: 400,
     tags: ["A-Frame", "WebVR", "JavaScript"],
     skills: ["JavaScript", "A-Frame", "WebVR", "HTML5", "CSS3", "Blockchain"],
-    icons: [<FaJs />, <SiAframe />, <FaServer />, <FaHtml5 />, <FaCss3 />, <FaCloud />, <FaTools />],
+    icons: [FaJs, SiAframe, FaServer, FaHtml5, FaCss3, FaCloud, FaTools],
     github: "https://github.com/rohansonawane/crypto-in-vr",
     video: "https://www.youtube.com/watch?v=PmEW1usHfR8",
     featured: true,
@@ -44,7 +44,7 @@ const projects = [
     imageHeight: 400,
     tags: ["Mapbox API", "PHP", "MySQL"],
     skills: ["React", "D3.js", "Mapbox API", "PHP", "MySQL", "Data Visualization"],
-    icons: [<SiReact />, <SiD3Dotjs />, <SiMapbox />, <FaPhp />, <FaDatabase />, <FaChartLine />, <FaTools />],
+    icons: [SiReact, SiD3Dotjs, SiMapbox, FaPhp, FaDatabase, FaChartLine, FaTools],
     github: null,
     live: "https://cjp.org.in/hate-map",
     featured: true,
@@ -58,7 +58,7 @@ const projects = [
     imageHeight: 400,
     tags: ["JavaScript", "HTML5", "CSS3", "Chrome APIs"],
     skills: ["JavaScript", "HTML5", "CSS3", "Chrome APIs", "DOM Manipulation", "Local Storage", "Mutation Observer"],
-    icons: [<FaJs />, <FaHtml5 />, <FaCss3 />, <FaTools />, <FaCode />, <FaServer />, <FaBrain />],
+    icons: [FaJs, FaHtml5, FaCss3, FaTools, FaCode, FaServer, FaBrain],
     github: "https://github.com/rohansonawane/website-section-hider",
     video: "https://www.youtube.com/watch?v=MLIDQBssJ2o&feature=youtu.be",
     featured: true,
@@ -189,17 +189,25 @@ const FeaturedProjects = () => {
 
                     {/* Skills */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {project.skills.map((skill, skillIndex) => (
-                        <motion.span
-                          key={`skill-${skillIndex}`}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
-                          transition={{ duration: 0.3, delay: skillIndex * 0.1 }}
-                          className="px-3 py-1 text-xs rounded-full backdrop-blur-xl bg-white/[0.02] border border-white/10 text-white/90 hover:bg-accent/20 transition-colors duration-300 flex items-center"
-                        >
-                          <span key={`icon-${skillIndex}`} className="text-accent mr-1">{project.icons[skillIndex]}</span> {skill}
-                        </motion.span>
-                      ))}
+                      {project.skills.map((skill, skillIndex) => {
+                        const IconComponent = project.icons[skillIndex];
+                        return (
+                          <motion.span
+                            key={`skill-${skillIndex}`}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.3, delay: skillIndex * 0.1 }}
+                            className="px-3 py-1 text-xs rounded-full backdrop-blur-xl bg-white/[0.02] border border-white/10 text-white/90 hover:bg-accent/20 transition-colors duration-300 flex items-center"
+                          >
+                            {IconComponent && (
+                              <span className="text-accent mr-1">
+                                <IconComponent />
+                              </span>
+                            )}
+                            {skill}
+                          </motion.span>
+                        );
+                      })}
                     </div>
 
                     {/* Separator */}
@@ -276,17 +284,25 @@ const FeaturedProjects = () => {
 
                     {/* Skills */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {project.skills.map((skill, skillIndex) => (
-                        <motion.span
-                          key={`skill-${skillIndex}`}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
-                          transition={{ duration: 0.3, delay: skillIndex * 0.1 }}
-                          className="px-3 py-1 text-xs rounded-full backdrop-blur-xl bg-white/[0.02] border border-white/10 text-white/90 hover:bg-accent/20 transition-colors duration-300 flex items-center"
-                        >
-                          <span key={`icon-${skillIndex}`} className="text-accent mr-1">{project.icons[skillIndex]}</span> {skill}
-                        </motion.span>
-                      ))}
+                      {project.skills.map((skill, skillIndex) => {
+                        const IconComponent = project.icons[skillIndex];
+                        return (
+                          <motion.span
+                            key={`skill-${skillIndex}`}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.3, delay: skillIndex * 0.1 }}
+                            className="px-3 py-1 text-xs rounded-full backdrop-blur-xl bg-white/[0.02] border border-white/10 text-white/90 hover:bg-accent/20 transition-colors duration-300 flex items-center"
+                          >
+                            {IconComponent && (
+                              <span className="text-accent mr-1">
+                                <IconComponent />
+                              </span>
+                            )}
+                            {skill}
+                          </motion.span>
+                        );
+                      })}
                     </div>
 
                     {/* Links */}
