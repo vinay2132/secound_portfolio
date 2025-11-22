@@ -4,7 +4,7 @@ Constants and configuration values for the AI Career Assistant
 
 # API Configuration
 DEFAULT_API_KEY = "AIzaSyD26rG9VpYFPmYCnQ_U8OO6jOKREzEZRYY"
-GEMINI_MODEL = "gemini-2.0-flash-exp"
+GEMINI_MODEL = "gemini-2.5-flash"
 
 # File Configuration
 DEFAULT_RESUME = "Vinay_Ramesh_full_stack_developer.pdf"

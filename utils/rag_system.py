@@ -203,7 +203,7 @@ RELEVANT INFORMATION FROM YOUR DOCUMENTS:
         return context
     
     def generate_with_rag(self, prompt_template: str, query_context: str, 
-                         model_name: str = "gemini-2.0-flash-exp", **kwargs) -> str:
+                         model_name: str = "gemini-2.5-flash", **kwargs) -> str:
         """
         Generate content using RAG-enhanced context
         

@@ -197,7 +197,7 @@ def call_gemini(prompt, api_key):
     """Call Gemini API with the given prompt"""
     try:
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel(model_name='gemini-2.0-flash-exp')
+        model = genai.GenerativeModel(model_name='gemini-2.5-flash')
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
