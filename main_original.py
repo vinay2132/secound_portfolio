@@ -211,7 +211,7 @@ if not st.session_state.auto_loaded:
 
 # Get API key from environment or user input
 env_api_key = os.getenv('GEMINI_API_KEY')
-DEFAULT_API_KEY = "AIzaSyD26rG9VpYFPmYCnQ_U8OO6jOKREzEZRYY"
+DEFAULT_API_KEY = "AIzaSyCR51ygCFb9W1C-s6pX_ieK8FvATLrSNfI"
 
 # Sidebar for API Key and Document Upload
 with st.sidebar:
