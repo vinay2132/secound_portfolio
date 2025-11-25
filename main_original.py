@@ -211,7 +211,7 @@ if not st.session_state.auto_loaded:
 
 # Get API key from environment or user input
 env_api_key = os.getenv('GEMINI_API_KEY')
-DEFAULT_API_KEY = "AIzaSyANKqPHIQLJYQsaR3_rppM-6Mmht_lCGPw"
+DEFAULT_API_KEY = None
 
 # Sidebar for API Key and Document Upload
 with st.sidebar:
@@ -225,9 +225,12 @@ with st.sidebar:
         st.text(f"Key: {masked_key}")
     else:
         api_key = DEFAULT_API_KEY
-        st.success("✅ Using default API Key")
-        masked_key = DEFAULT_API_KEY[:8] + "..." + DEFAULT_API_KEY[-4:]
-        st.text(f"Key: {masked_key}")
+        if DEFAULT_API_KEY:
+            st.success("✅ Using default API Key")
+            masked_key = DEFAULT_API_KEY[:8] + "..." + DEFAULT_API_KEY[-4:]
+            st.text(f"Key: {masked_key}")
+        else:
+            st.warning("⚠️ No API Key found")
         
         custom_key = st.text_input("Override API Key (optional)", type="password", 
                                  help="Leave empty to use default key")

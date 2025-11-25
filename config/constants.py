@@ -3,7 +3,7 @@ Constants and configuration values for the AI Career Assistant
 """
 
 # API Configuration
-DEFAULT_API_KEY = "AIzaSyANKqPHIQLJYQsaR3_rppM-6Mmht_lCGPw"
+DEFAULT_API_KEY = None
 GEMINI_MODEL = "gemini-2.5-flash"
 
 # File Configuration
