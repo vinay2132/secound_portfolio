@@ -159,15 +159,7 @@ def main():
     
     # Check for API key
     if not api_key:
-        st.warning("⚠️ Please enter your Gemini API key in the sidebar or add it to your .env file.")
-        st.info("""
-        ### How to setup:
-        1. Create a `.env` file in the same folder
-        2. Add this line: `GEMINI_API_KEY=your_api_key_here`
-        3. Or enter the key manually in the sidebar
-        
-        Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
-        """)
+        st.info("👈 Please unlock the application in the sidebar to continue.")
         st.stop()
     
     # Check if documents are loaded
